@@ -1,0 +1,15 @@
+packages:
+  - apps/*
+  - packages/*
+
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+
+minimumReleaseAge: 1440
+
+linkWorkspacePackages: true
+preferWorkspacePackages: true
+
+overrides:
+  vite: 7.3.6

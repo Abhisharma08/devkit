@@ -1,0 +1,24 @@
+{
+  "name": "@devkit/engines",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./regex-worker": "./src/regex.worker.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run --root ../.. packages/engines/src"
+  },
+  "dependencies": {
+    "diff": "^8.0.2",
+    "qrcode": "^1.5.4",
+    "sql-formatter": "^15.6.10",
+    "cron-parser": "4.9.0"
+  },
+  "devDependencies": {
+    "@types/qrcode": "^1.5.5"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "name": "devkit",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "packageManager": "pnpm@10.34.9",
+  "engines": {
+    "node": ">=22.14"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "dev:web": "pnpm --filter @devkit/web dev",
+    "dev:extension": "pnpm --filter @devkit/extension dev",
+    "build": "turbo build",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "turbo typecheck && tsc -p tsconfig.tools.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "package:extension": "pnpm --filter @devkit/extension zip",
+    "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && node scripts/verify-artifacts.mjs && pnpm test:e2e",
+    "release:package": "node scripts/verify-artifacts.mjs && python3 scripts/package-release.py",
+    "release:screenshots": "node scripts/capture-store-assets.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@eslint/js": "^9.39.0",
+    "@playwright/test": "^1.56.0",
+    "@types/node": "^22.19.0",
+    "eslint": "^9.39.0",
+    "globals": "^16.4.0",
+    "turbo": "^2.6.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.0",
+    "vitest": "^3.2.4"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "next": "^16.4.6"
+  },
+  "overrides": {
+    "vite": "7.3.6"
+  }
+}
