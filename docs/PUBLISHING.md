@@ -23,7 +23,7 @@ Use these settings:
 
 The explicit `npm ci` uses the committed lockfile; skip Cloudflare's separate automatic dependency installation. pnpm workspaces and Turborepo remain available for local orchestration. Do not select a server-rendered Next.js adapter or provision a database: this app exports static files.
 
-Click **Save and Deploy**. Cloudflare assigns the actual `https://<project>.pages.dev` address after deployment; the suggested project name has not been reserved. Check the homepage and `/privacy/` over HTTPS, run a tool, and check the donation link. No app environment secrets are required.
+Leave Cloudflare Web Analytics disabled to preserve DevKit’s no-tracking behavior. Click **Save and Deploy**. Cloudflare assigns the actual `https://<project>.pages.dev` address after deployment; the suggested project name has not been reserved. Check the homepage and `/privacy/` over HTTPS, run a tool, and check the donation link. No app environment secrets are required.
 
 Save the actual public website URL. The Chrome listing privacy URL will be that address followed by `/privacy/`.
 
@@ -47,6 +47,14 @@ An optional manual GitHub Actions workflow also supports Wrangler deployment. It
 6. Select the intended distribution/visibility settings and submit for Google's review. Review approval and public listing availability are controlled by Google; uploading a ZIP is not approval or publication.
 
 The [official listing guide](https://developer.chrome.com/docs/webstore/cws-dashboard-listing) specifies required icons and screenshots. See the [publishing guide](https://developer.chrome.com/docs/webstore/publish) for the complete dashboard flow.
+
+## Capture store screenshots manually
+
+If CI is unavailable, load the built extension unpacked in Chrome and use **Expand** to open its full-page workspace. Use only the built-in examples or generated UUIDs; avoid real credentials.
+
+Open Chrome DevTools, turn on its device toolbar, select Responsive, set the viewport to **1280 × 800**, and set device pixel ratio to **1**. In the DevTools command menu, choose **Capture screenshot**. Capture the tool directory and a working tool result. Verify the downloaded PNG dimensions before uploading. The official store also accepts 640 × 400 screenshots. Do not substitute a design mockup for an actual product screenshot.
+
+The required 128 px icon is already available at `apps/extension/public/icon/128.png`. See the [Chrome listing image requirements](https://developer.chrome.com/docs/webstore/cws-dashboard-listing#graphic-assets).
 
 ## Rebuild the release
 
