@@ -8,6 +8,10 @@ The website uses Cloudflare Pages; the extension is submitted separately to the 
 
 Use this route for automatic updates from the supplied repository. In the [Cloudflare dashboard](https://dash.cloudflare.com/), open Workers & Pages and create a **Pages** application connected to GitHub. Authorize access to **Abhisharma08/devkit**, then select that repository.
 
+If the setup asks for a **Deploy command** such as `npx wrangler deploy`, it is the Workers Builds flow. Return to **Workers & Pages → Create application → Pages → Connect to Git**. A Git-connected Pages project deploys the static build output automatically; it does not need that Workers deploy command. This distinction matters for the requested `pages.dev` address.
+
+The error “application detection logic has been run in the root of a workspace” comes from Workers automatic framework detection at the monorepo root. A successful `turbo build` followed by that error means compilation succeeded and the deployment flow needs correction. Building only `@devkit/web` is sufficient for the website.
+
 Use these settings:
 
 | Setting | Value |
