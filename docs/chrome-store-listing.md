@@ -76,8 +76,8 @@ Answer the dashboard according to the package actually uploaded. The current pac
 
 ## URLs and account fields to complete
 
-- Website: actual Cloudflare Pages production URL after deployment.
-- Privacy policy: actual production URL plus `/privacy/`.
+- Website: https://devkit.opervia.tech/
+- Privacy policy: https://devkit.opervia.tech/privacy/
 - Support URL: https://github.com/Abhisharma08/devkit/issues
 - Support email: a monitored address from the publisher; verify it in the dashboard.
 

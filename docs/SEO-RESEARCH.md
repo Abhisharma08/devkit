@@ -64,9 +64,9 @@ For Chrome, accurate copy is only part of discovery. [Google’s store guidance]
 
 ## Production origin setup
 
-No production hostname has been confirmed. Configure **NEXT_PUBLIC_SITE_URL** to the actual HTTPS website origin in Cloudflare Pages production settings, then rebuild. Alternatively set `websiteUrl` in `packages/config/src/index.ts`. A Git-connected Pages build on branch `main` can automatically use `CF_PAGES_URL`. Other production branch names should set the explicit variable. Preview deployments should use the production origin explicitly rather than announcing a temporary preview hostname as canonical.
+The production hostname is now configured as `https://devkit.opervia.tech` in shared project configuration. Configure **NEXT_PUBLIC_SITE_URL** to the actual HTTPS website origin in Cloudflare Pages production settings, then rebuild. Alternatively set `websiteUrl` in `packages/config/src/index.ts`. A Git-connected Pages build on branch `main` can automatically use `CF_PAGES_URL`. Other production branch names should set the explicit variable. Preview deployments should use the production origin explicitly rather than announcing a temporary preview hostname as canonical.
 
-For local testing, leave the value empty. Canonical and absolute social URLs are omitted and the sitemap has no URLs, avoiding a fictitious hostname. An archive built without the origin must be rebuilt with the correct origin before a manual production upload. Do not submit the empty local sitemap to search engines. The social PNG is generated from the checked-in SVG; it loads no external fonts or scripts.
+Local builds use the shared production origin unless explicitly overridden. In a fork with both the shared origin and environment override empty, canonical and absolute social URLs are omitted and the sitemap has no URLs, avoiding a fictitious hostname. An archive built without the origin must be rebuilt with the correct origin before a manual production upload. Do not submit the empty local sitemap to search engines. The social PNG is generated from the checked-in SVG; it loads no external fonts or scripts.
 
 ## Launch and measurement
 

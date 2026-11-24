@@ -2,6 +2,12 @@
 
 Repository: https://github.com/Abhisharma08/devkit
 
+Production website: https://devkit.opervia.tech/
+
+Google Search Console verification file: https://devkit.opervia.tech/google00dcef4469dbd84e.html
+
+Sitemap to submit: https://devkit.opervia.tech/sitemap.xml
+
 The website uses Cloudflare Pages; the extension is submitted separately to the Chrome Web Store. Publishing the website does not publish the extension.
 
 ## Cloudflare Pages: connect GitHub
@@ -24,7 +30,7 @@ Use these settings:
 | Build output directory | `apps/web/out` |
 | Environment variable | `NODE_VERSION=24` |
 | Environment variable | `SKIP_DEPENDENCY_INSTALL=true` |
-| Production SEO origin | `NEXT_PUBLIC_SITE_URL=https://<actual-project>.pages.dev` after the address is known |
+| Production SEO origin | `NEXT_PUBLIC_SITE_URL=https://devkit.opervia.tech` |
 
 The explicit `npm ci` uses the committed lockfile; skip Cloudflare's separate automatic dependency installation. pnpm workspaces and Turborepo remain available for local orchestration. Do not select a server-rendered Next.js adapter or provision a database: this app exports static files.
 
