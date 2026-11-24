@@ -2,34 +2,55 @@
 
 ## Name
 
-DevKit — Local Developer Tools
+DevKit: JSON Formatter & Developer Tools
 
 ## Summary
 
-23 free, private developer tools. Format, encode, generate and debug locally.
+23 offline developer tools: JSON and SQL formatters, JWT decoder, Base64, UUIDs, regex and more. Local processing, no tracking.
 
 ## Detailed description
 
-DevKit brings 23 developer utilities into a Chrome popup, side panel, and full-page workspace. Every tool processes its input locally on your device.
+Format JSON, beautify SQL, decode JWT claims, and convert Base64 without leaving Chrome. DevKit is a free, open-source developer toolbox with 23 utilities that process data locally on your device.
 
-Included tools:
+Open a quick task from the toolbar popup, keep tools beside your work in Chrome’s side panel, or expand into a full-page workspace. The installed production extension works offline.
 
-- JSON formatting, validation, and minification; SQL formatting.
-- Base64 and URL encoding/decoding; JWT decoding.
-- UUIDs, passwords, random strings, QR codes, and SHA hashes.
-- Unix timestamps and cron schedules.
-- Regex testing, text diff, case conversion, and Unicode word counting.
-- Color conversion and CSS gradients.
-- cURL-to-fetch code conversion, URL inspection, and integer base conversion.
+FORMAT AND INSPECT
+• JSON formatter: pretty-print JSON with 2 or 4 spaces.
+• JSON validator and minifier: check syntax or compact valid JSON.
+• SQL formatter: choose standard SQL, PostgreSQL, MySQL, SQLite, T-SQL, or BigQuery.
+• cURL to JavaScript fetch: generate request code without executing it.
+• URL parser: inspect components and repeated query parameters.
+• Number base converter: binary, octal, decimal, and hexadecimal integers using BigInt.
 
-Use search, favorites, keyboard shortcuts, copy/reset controls, and light or dark themes. The installed production extension works offline. Tool inputs and results remain in memory and are cleared when switching tools or reloading. Only theme and favorite tool identifiers are saved locally.
+ENCODE AND DEBUG
+• Base64 encoder and decoder for UTF-8 text.
+• URL encoder and decoder for percent-encoded components.
+• JWT decoder for headers and claims. Signatures are NOT verified.
+• JavaScript regex tester with captures and a worker timeout.
+• Text diff checker for line-by-line comparisons.
 
-No accounts, analytics, advertisements, backend services, paywalls, or paid APIs. Optional Buy Me a Coffee donations never unlock features and open only when clicked.
+GENERATE AND CONVERT
+• UUID v4, random passwords, and custom-alphabet random strings using Web Crypto.
+• QR code generator with SVG download.
+• SHA-256, SHA-384, SHA-512, and legacy SHA-1 text hashes.
+• Unix timestamp converter for seconds, milliseconds, and ISO dates.
+• Five-field cron expression builder with the next five runs in UTC.
+• Case converter, Unicode word and character counter, HEX/RGB/HSL color converter, and CSS linear gradient generator.
 
-JWT tokens are decoded only; signatures are not verified. Regex testing uses a disposable worker with a timeout. The cURL converter generates code without executing commands or sending requests.
+MADE FOR EVERYDAY DEVELOPMENT
+Find a tool with global search, pin favorites, switch between light and dark themes, and use copy/reset controls. Keyboard shortcuts include Ctrl/Cmd+K to search and Ctrl/Cmd+Enter to run the active tool.
 
-Open-source project, MIT license:
+PRIVACY BY DESIGN
+No accounts, analytics, advertising, backend services, or remote tool APIs. Inputs and results stay in memory and clear when switching tools or reloading. Only theme and favorite tool IDs are stored locally. Your clipboard manager or operating system may retain copied content.
+
+DevKit requests only the sidePanel permission. It has no host permissions or content scripts and cannot read websites or browsing history. All executable code is bundled.
+
+Every tool is free. Optional Buy Me a Coffee donations support development and never unlock features or interrupt your work.
+
+Open source under the MIT license:
 https://github.com/Abhisharma08/devkit
+
+Limitations: JWT decoding does not establish authenticity. SQL formatting does not execute or optimize queries. The cURL converter supports a documented subset and sends no requests. SHA-1 is legacy; plain SHA hashing is unsuitable for password storage.
 
 ## Suggested category and language
 
@@ -66,3 +87,9 @@ Answer the dashboard according to the package actually uploaded. The current pac
 - Screenshots: `release/store-assets/01-tool-directory.png`, `02-json-formatter.png`, and `03-uuid-generator.png`.
 
 These screenshots must be generated from the actual built extension and visually reviewed. They are produced by `npm run release:screenshots` in CI or an environment that permits Chromium. Until that command succeeds, these screenshot files are pending; they are not mock images.
+
+## Discoverability and submission notes
+
+The name and summary above match `apps/extension/wxt.config.ts`; submit the detailed description manually in the Chrome Web Store developer dashboard. This repository change does not publish or update a store listing.
+
+Primary store intent: a local developer toolbox for Chrome. Supporting terms describe actual workflows: JSON formatter, SQL formatter, JWT decoder, Base64, UUID, and regex tester. Do not add a repeated keyword block, competitor names, unsupported capabilities, artificial reviews, or ranking claims. Store placement depends on more than copy. See [Chrome’s listing guidance](https://developer.chrome.com/docs/webstore/best-listing) and [keyword spam policy](https://developer.chrome.com/docs/webstore/program-policies/listing-requirements).

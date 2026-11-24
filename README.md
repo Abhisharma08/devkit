@@ -170,3 +170,9 @@ Base64 supports standard padded UTF-8 text, not arbitrary files. URL conversion 
 ## Contributing and license
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Released under the [MIT license](LICENSE).
+
+### Search discovery
+
+Each web tool has a static `/tools/<slug>/` page with unique metadata, task guidance, and related links. Set `NEXT_PUBLIC_SITE_URL` to your actual production HTTPS origin before building to populate canonical URLs, sitemap entries, and absolute share-image URLs. Cloudflare Pages builds on `main` can infer the origin from `CF_PAGES_URL`; explicit configuration is recommended. Local builds without an origin intentionally omit canonical URLs and produce an empty sitemap.
+
+See [keyword research and launch measurement](docs/SEO-RESEARCH.md) and the [Chrome Web Store listing copy](docs/chrome-store-listing.md). Neither website deployment nor store publication happens merely by editing these files.

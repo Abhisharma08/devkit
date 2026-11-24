@@ -93,7 +93,7 @@ test('processing emits no network requests', async ({ page }) => {
 test('dashboard and workspace meet automated accessibility checks', async ({ page }) => {
   await page.goto('/');
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
-  await page.getByRole('button', { name: 'Open JSON formatter', exact: true }).click();
+  await page.getByRole('link', { name: 'Open JSON formatter', exact: true }).click();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 });
 
@@ -114,7 +114,7 @@ test('global search preserves the workspace until another tool is selected', asy
   await expect(result).toContainText('keep-this-input');
   await search.fill('timestamp');
   await page.keyboard.press('Enter');
-  await expect(page.getByRole('heading', { name: 'Unix timestamp converter', exact: true })).toBeFocused();
+  await expect(page.getByRole('heading', { name: 'Unix Timestamp & Epoch Converter', exact: true })).toBeFocused();
   await expect(page.getByText('Your result will appear here')).toBeVisible();
 });
 
@@ -154,4 +154,31 @@ test('number-base example restores compatible settings before running', async ({
   await page.getByRole('button', { name: 'Convert number', exact: true }).click();
   await expect(page.getByRole('textbox', { name: 'Tool result', exact: true }).last()).toContainText('FF');
   await expect(page.getByRole('alert')).toHaveCount(0);
+});
+
+test('static tool links load the matching workspace and search metadata', async ({ page }) => {
+  await page.goto('/');
+  const link = page.getByRole('link', { name: 'Open JSON formatter', exact: true });
+  await expect(link).toHaveAttribute('href', '/tools/json-formatter/');
+  await link.click();
+  await expect(page).toHaveURL(/\/tools\/json-formatter\/$/);
+  await expect(page).toHaveTitle('JSON Formatter Online | DevKit');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('JSON Formatter Online');
+  await page.getByRole('button', { name: 'Load example' }).click();
+  await page.getByRole('button', { name: 'Format JSON', exact: true }).click();
+  await expect(page.getByRole('textbox', { name: 'Tool result', exact: true }).last()).not.toBeEmpty();
+  await page.reload();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('JSON Formatter Online');
+  await expect(page.getByRole('heading', { name: 'How to use this tool' })).toBeVisible();
+  await page.getByRole('link', { name: 'Back to tools', exact: true }).click();
+  await expect(page.locator('.tool-card')).toHaveCount(fixtures.length);
+});
+
+test('tool-page category navigation returns to the selected home filter', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Desktop sidebar; mobile drawer has separate coverage.');
+  await page.goto('/tools/json-formatter/');
+  await page.locator('.sidebar').getByRole('button', { name: /^Security\b/ }).click();
+  await expect(page).toHaveURL(/\/#category=Security$/);
+  await expect(page.getByRole('heading', { level: 2, name: 'Security', exact: true })).toBeVisible();
+  await expect(page.locator('.tool-card')).toHaveCount(3);
 });

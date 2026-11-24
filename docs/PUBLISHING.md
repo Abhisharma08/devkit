@@ -24,10 +24,13 @@ Use these settings:
 | Build output directory | `apps/web/out` |
 | Environment variable | `NODE_VERSION=24` |
 | Environment variable | `SKIP_DEPENDENCY_INSTALL=true` |
+| Production SEO origin | `NEXT_PUBLIC_SITE_URL=https://<actual-project>.pages.dev` after the address is known |
 
 The explicit `npm ci` uses the committed lockfile; skip Cloudflare's separate automatic dependency installation. pnpm workspaces and Turborepo remain available for local orchestration. Do not select a server-rendered Next.js adapter or provision a database: this app exports static files.
 
 Leave Cloudflare Web Analytics disabled to preserve DevKit’s no-tracking behavior. Click **Save and Deploy**. Cloudflare assigns the actual `https://<project>.pages.dev` address after deployment; the suggested project name has not been reserved. Check the homepage and `/privacy/` over HTTPS, run a tool, and check the donation link. No app environment secrets are required.
+
+The first production `main` build can infer its origin from Cloudflare’s `CF_PAGES_URL`. Set `NEXT_PUBLIC_SITE_URL` explicitly once you know the assigned address, then redeploy. This populates canonical tags, `/sitemap.xml`, and share metadata; verify those URLs after deployment. See [SEO research](SEO-RESEARCH.md).
 
 Save the actual public website URL. The Chrome listing privacy URL will be that address followed by `/privacy/`.
 
@@ -35,11 +38,13 @@ Cloudflare's [Git integration](https://developers.cloudflare.com/pages/configura
 
 ## Alternative: upload the prebuilt ZIP
 
+For manual production upload, first rebuild with `NEXT_PUBLIC_SITE_URL` set to the real production origin and rerun `npm run release:package`. Local archives made without an origin intentionally have no canonical URLs and an empty sitemap.
+
 `release/devkit-cloudflare-pages-1.0.0.zip` contains the website with `index.html` and `_headers` at its root. Create a Pages **Direct Upload** project and upload that ZIP. It does not contain the source repository or extension.
 
 Choose the project type deliberately: Cloudflare does not allow a Direct Upload project to be converted to Git integration. A new project is needed for that change. See the [Direct Upload documentation](https://developers.cloudflare.com/pages/get-started/direct-upload/).
 
-An optional manual GitHub Actions workflow also supports Wrangler deployment. It needs `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets and the `CLOUDFLARE_PAGES_PROJECT` variable. Configure these in GitHub/Cloudflare, not in chat or source files. The token needs only the Pages permissions for the intended account. The workflow does not run automatically.
+An optional manual GitHub Actions workflow also supports Wrangler deployment. It needs `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets and the `CLOUDFLARE_PAGES_PROJECT` variable. Set the `DEVKIT_SITE_URL` repository variable to the actual production origin for metadata in CI and manual deployments. Configure these in GitHub/Cloudflare, not in chat or source files. The token needs only the Pages permissions for the intended account. The workflow does not run automatically.
 
 ## Chrome Web Store
 

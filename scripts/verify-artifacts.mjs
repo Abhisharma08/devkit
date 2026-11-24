@@ -4,6 +4,8 @@ import { join } from 'node:path';
 const root = 'apps/extension/.output/chrome-mv3';
 const manifest = JSON.parse(await readFile(join(root, 'manifest.json'), 'utf8'));
 assert.equal(manifest.manifest_version, 3);
+assert(manifest.name.length <= 75);
+assert(manifest.description.length <= 132);
 assert.deepEqual(manifest.permissions, ['sidePanel']);
 assert.deepEqual(manifest.host_permissions ?? [], []);
 assert(!manifest.content_security_policy.extension_pages.includes('unsafe-eval'));
@@ -25,4 +27,5 @@ async function scan(directory) {
 }
 await scan(root);
 for (const path of ['apps/web/out/index.html', 'apps/web/out/privacy/index.html', 'apps/web/out/_headers']) await stat(path);
+await import('./verify-seo.mjs');
 console.log('Static website and least-privilege MV3 artifacts verified.');

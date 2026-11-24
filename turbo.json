@@ -11,6 +11,11 @@
         "out/**",
         ".output/**",
         "dist/**"
+      ],
+      "env": [
+        "NEXT_PUBLIC_SITE_URL",
+        "CF_PAGES_URL",
+        "CF_PAGES_BRANCH"
       ]
     },
     "typecheck": {

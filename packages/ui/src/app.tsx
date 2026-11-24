@@ -1,8 +1,8 @@
 'use client';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { ArrowLeft, ArrowUpRight, Binary, Braces, Check, ChevronRight, Clock3, Code2, Coffee, Database, Fingerprint, Grid2X2, KeyRound, Keyboard, LockKeyhole, Menu, Moon, Palette, QrCode, Regex, Search, ShieldCheck, Shuffle, Star, Sun, Text, X } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { projectConfig, validDonationUrl } from '@devkit/config';
+import { projectConfig, validDonationUrl, toolPath } from '@devkit/config';
 import { Button } from './components/ui/button';
 import { categories, tools, type ToolDefinition } from './registry';
 import { usePreferences } from './store';
@@ -10,11 +10,11 @@ import { AppErrorBoundary } from './error-boundary';
 
 const icons: Record<ToolDefinition['icon'], LucideIcon> = { braces: Braces, database: Database, binary: Binary, key: KeyRound, fingerprint: Fingerprint, qr: QrCode, clock: Clock3, regex: Regex, text: Text, palette: Palette, code: Code2 };
 const categoryIcons: Record<string, LucideIcon> = { 'All tools': Grid2X2, Favorites: Star, Data: Braces, Encoding: Binary, API: Code2, Security: ShieldCheck, Generators: Shuffle, Time: Clock3, Text, Design: Palette };
-export interface DevKitAppProps { surface?: 'web' | 'popup' | 'sidepanel' | 'workspace'; openWorkspace?: () => void; openSidePanel?: () => void }
+export interface DevKitAppProps { surface?: 'web' | 'popup' | 'sidepanel' | 'workspace'; openWorkspace?: () => void; openSidePanel?: () => void; initialToolId?: string; toolHeading?: string; pageHeading?: string; children?: ReactNode }
 
-function WorkspaceApp({ surface = 'web', openWorkspace, openSidePanel }: DevKitAppProps) {
+function WorkspaceApp({ surface = 'web', openWorkspace, openSidePanel, initialToolId, toolHeading, pageHeading, children }: DevKitAppProps) {
   const { theme, favorites, toggleTheme, toggleFavorite } = usePreferences();
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string | null>(initialToolId ?? null);
   const [query, setQuery] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
   const [category, setCategory] = useState('All tools');
@@ -34,10 +34,14 @@ function WorkspaceApp({ surface = 'web', openWorkspace, openSidePanel }: DevKitA
 
   useEffect(() => {
     void usePreferences.persist?.rehydrate();
-    const id = new URLSearchParams(location.hash.slice(1)).get('tool');
-    if (tools.some(tool => tool.id === id)) setSelected(id);
-    return () => clearTimeout(timer.current);
-  }, []);
+    const hash = new URLSearchParams(location.hash.slice(1));
+    const id = hash.get('tool');
+    const initialCategory = hash.get('category');
+    if (!initialToolId && initialCategory && categories.includes(initialCategory)) setCategory(initialCategory);
+    if (!initialToolId && tools.some(tool => tool.id === id)) setSelected(id);
+    const frame = initialToolId ? requestAnimationFrame(() => heading.current?.focus({ preventScroll: true })) : undefined;
+    return () => { clearTimeout(timer.current); if (frame !== undefined) cancelAnimationFrame(frame); };
+  }, [initialToolId]);
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
     document.documentElement.style.colorScheme = theme;
@@ -64,7 +68,8 @@ function WorkspaceApp({ surface = 'web', openWorkspace, openSidePanel }: DevKitA
     return () => window.removeEventListener('keydown', keyboard);
   }, []);
 
-  function choose(id: string | null) {
+  function choose(id: string | null, nextCategory?: string) {
+    if (surface === 'web' && (id || initialToolId)) { location.assign(id ? toolPath(id) : nextCategory ? `/#category=${encodeURIComponent(nextCategory)}` : '/'); return; }
     setSelected(id); setQuery(''); closeNavigation();
     history.replaceState(null, '', id ? `#tool=${id}` : location.pathname);
     // Deliberate navigation starts at the tool title, including in the scrollable popup.
@@ -88,7 +93,7 @@ function WorkspaceApp({ surface = 'web', openWorkspace, openSidePanel }: DevKitA
     <p className="nav-label">TOOLS</p>
     <nav aria-label="Tool categories">{categories.map(item => {
       const Icon = categoryIcons[item] ?? Braces;
-      return <button key={item} className={`nav-item ${category === item && !active ? 'active' : ''}`} aria-current={category === item && !active ? 'page' : undefined} onClick={() => { setCategory(item); choose(null); }}>
+      return <button key={item} className={`nav-item ${category === item && !active ? 'active' : ''}`} aria-current={category === item && !active ? 'page' : undefined} onClick={() => { setCategory(item); choose(null, item); }}>
         <Icon size={18} /><span>{item}</span><span className="nav-count">{categoryCount(item)}</span>
       </button>;
     })}</nav>
@@ -113,9 +118,9 @@ function WorkspaceApp({ surface = 'web', openWorkspace, openSidePanel }: DevKitA
       </header>
       <main id="main" className="main-content" tabIndex={-1}>
         {active ? <>
-          <button className="back-link" onClick={() => choose(null)}><ArrowLeft size={16} /> Back to tools</button>
-          <div className="tool-title-row"><div><span className="eyebrow">{active.category}</span><h1 ref={heading} tabIndex={-1}>{active.name}</h1><p className="subtitle">{active.description}</p></div><Button variant="outline" size="icon" title={favorites.includes(active.id) ? 'Remove from favorites' : 'Add to favorites'} aria-label={`${favorites.includes(active.id) ? 'Unfavorite' : 'Favorite'} ${active.name}`} aria-pressed={favorites.includes(active.id)} onClick={() => toggleFavorite(active.id)}><Star size={19} fill={favorites.includes(active.id) ? 'currentColor' : 'none'} /></Button></div>
-        </> : <div className="hero"><h1 ref={heading} tabIndex={-1}>Developer tools</h1><p className="subtitle">Format, inspect, and convert data in your browser.</p></div>}
+          {surface === 'web' ? <a className="back-link" href="/"><ArrowLeft size={16} /> Back to tools</a> : <button className="back-link" onClick={() => choose(null)}><ArrowLeft size={16} /> Back to tools</button>}
+          <div className="tool-title-row"><div><span className="eyebrow">{active.category}</span><h1 ref={heading} tabIndex={-1}>{toolHeading ?? active.name}</h1><p className="subtitle">{active.description}</p></div><Button variant="outline" size="icon" title={favorites.includes(active.id) ? 'Remove from favorites' : 'Add to favorites'} aria-label={`${favorites.includes(active.id) ? 'Unfavorite' : 'Favorite'} ${active.name}`} aria-pressed={favorites.includes(active.id)} onClick={() => toggleFavorite(active.id)}><Star size={19} fill={favorites.includes(active.id) ? 'currentColor' : 'none'} /></Button></div>
+        </> : <div className="hero"><h1 ref={heading} tabIndex={-1}>{pageHeading ?? 'Developer tools'}</h1><p className="subtitle">Format, inspect, and convert data in your browser.</p></div>}
 
 
         <div className="search-area" role="search" aria-label="Find developer tools" onFocusCapture={() => setSearchOpen(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setSearchOpen(false); }}>
@@ -130,14 +135,15 @@ function WorkspaceApp({ surface = 'web', openWorkspace, openSidePanel }: DevKitA
           <div className="tool-grid">{matches.map(tool => {
             const Icon = icons[tool.icon]; const favorite = favorites.includes(tool.id);
             return <article className="tool-card" key={tool.id}>
-              <button className="card-open" onClick={() => choose(tool.id)} aria-label={`Open ${tool.name}`}><span className="tool-icon"><Icon size={19} /></span><h3>{tool.name}</h3><p>{tool.description}</p></button>
+              {surface === 'web' ? <a className="card-open" href={toolPath(tool.id)} aria-label={`Open ${tool.name}`}><span className="tool-icon"><Icon size={19} /></span><h3>{tool.name}</h3><p>{tool.description}</p></a> : <button className="card-open" onClick={() => choose(tool.id)} aria-label={`Open ${tool.name}`}><span className="tool-icon"><Icon size={19} /></span><h3>{tool.name}</h3><p>{tool.description}</p></button>}
               <button className={`favorite-button ${favorite ? 'is-favorite' : ''}`} title={favorite ? 'Remove from favorites' : 'Add to favorites'} aria-label={`${favorite ? 'Unfavorite' : 'Favorite'} ${tool.name}`} aria-pressed={favorite} onClick={() => toggleFavorite(tool.id)}><Star size={16} fill={favorite ? 'currentColor' : 'none'} /></button>
             </article>;
           })}</div>
           {!matches.length && <div className="empty-catalog">{category === 'Favorites' && !query ? <Star size={30} /> : <Search size={30} />}<h2>{category === 'Favorites' && !query ? 'No favorites yet.' : 'No tools found.'}</h2><p>{category === 'Favorites' && !query ? 'Star a tool to keep it here.' : 'Try a different name or keyword, or explore all tools.'}</p><Button variant="outline" onClick={() => { setCategory('All tools'); setQuery(''); }}>Explore all tools</Button></div>}
         </>}
         {openSidePanel && <Button className="sidepanel-launch" variant="outline" onClick={openSidePanel}>Open side panel <ArrowUpRight size={15} /></Button>}
-        <footer><span>DevKit <span aria-hidden="true">/</span> Local developer utilities</span><div><button onClick={() => privacy.current?.showModal()}>Privacy</button><span>Free & open source</span>{donation && <a href={donation} target="_blank" rel="noopener noreferrer"><Coffee size={15} /> Support DevKit</a>}</div></footer>
+        {surface === 'web' && ((!selected && !initialToolId) || selected === initialToolId) && children}
+        <footer><span>DevKit <span aria-hidden="true">/</span> Local developer utilities</span><div>{surface === 'web' ? <><a href="/chrome-extension/">Chrome extension</a><a href="/privacy/">Privacy</a></> : <button onClick={() => privacy.current?.showModal()}>Privacy</button>}<span>Free & open source</span>{donation && <a href={donation} target="_blank" rel="noopener noreferrer"><Coffee size={15} /> Support DevKit</a>}</div></footer>
       </main>
     </div>
     <div className={`toast ${toast ? 'visible' : ''}`} role="status" aria-live="polite" aria-atomic="true">{toast && <><Check size={17} />{toast}</>}</div>

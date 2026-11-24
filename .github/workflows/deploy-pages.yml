@@ -7,6 +7,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
+    env:
+      NEXT_PUBLIC_SITE_URL: ${{ vars.DEVKIT_SITE_URL }}
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4

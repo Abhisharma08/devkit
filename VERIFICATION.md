@@ -4,7 +4,7 @@ Date: November 24, 2026. Target release: 1.0.0.
 
 ## Verified locally
 
-- All 23 tools are wired through the shared registry. Engine/configuration and registry/preference tests pass: **163 tests in seven files**.
+- All 23 tools are wired through the shared registry. Engine/configuration and registry/preference tests pass: **178 tests in eight files**.
 - Repository ESLint passes with zero warnings.
 - All five packages pass the orchestrated type check. Next.js route types and WXT types are generated before checking clean checkouts.
 - The Next.js 16.4.6 website compiles and exports static pages to `apps/web/out`.
@@ -13,6 +13,16 @@ Date: November 24, 2026. Target release: 1.0.0.
 - Release packaging validates ZIP root paths, archive integrity, version agreement, and SHA-256 checksums. Website and extension ZIPs are separate.
 - The configured donation profile appears in the static website. The local website returned HTTP 200.
 - `npm ci --dry-run --ignore-scripts --offline` validates the committed npm lockfile against the manifests. Linux native-package entries are present in that lockfile.
+
+## SEO verification
+
+- The website exports 23 working tool pages, a Chrome extension information page, privacy page, robots.txt, and sitemap.xml.
+- Static artifact checks verify unique titles/descriptions, one H1 per page, discoverable directory links, existing related-tool destinations, parseable structured data, and a 1200×630 sharing PNG.
+- A separate build with an explicitly synthetic test origin passed canonical/social URL and 26-entry sitemap checks. That test domain is not a production address and is removed from the final local output.
+- Production canonicals use the configured origin. On Cloudflare Pages main builds, deployment-specific URLs resolve to the stable project alias. URL validation and preview handling have unit coverage.
+- The final local build has no configured production origin, intentionally omits canonicals, and has an empty sitemap. Set NEXT_PUBLIC_SITE_URL to the actual website URL before manual production upload. Git-connected Cloudflare main builds can infer the stable Pages address.
+- Chrome title/summary and detailed store copy are updated; these edits do not submit or publish the store listing. Live rankings, traffic, and search volume remain unmeasured.
+- The new tool-route Playwright check was attempted and stopped before running because the sandbox denied the local server bind (EPERM on 127.0.0.1:4173). No browser pass is claimed.
 
 ## Required outside this sandbox
 

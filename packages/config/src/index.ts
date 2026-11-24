@@ -1,8 +1,13 @@
 export const projectConfig = {
   name: 'DevKit',
+  // Production origin only. A build-time NEXT_PUBLIC_SITE_URL can override this.
+  websiteUrl: '',
   // Optional. Example: https://www.buymeacoffee.com/your-handle
   donationUrl: 'https://buymeacoffee.com/abhimanyusharma',
 } as const;
+
+export { toolRoutes, toolPath } from './tool-routes';
+export { siteOrigin, serializeJsonLd, pagesProductionOrigin } from './site-url';
 
 export function validDonationUrl(value: string): string | null {
   try {
