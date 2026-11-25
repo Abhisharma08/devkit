@@ -38,4 +38,7 @@ The Cloudflare Pages and Chrome upload ZIPs are prepared under `release/`. Instr
 
 Source publication to `Abhisharma08/devkit`, the CI result, the actual Cloudflare URL, and the Chrome listing/submission must be checked independently. A built ZIP or a configured workflow does not mean the site or extension is publicly live.
 
-Source is published on `main` at https://github.com/Abhisharma08/devkit (initial release commit `199c4e1`). GitHub Actions run 45335675254 failed before any job steps were available. Its logs were unavailable, and the integration refused a rerun with HTTP 403. The account-side cause is unconfirmed; browser CI and screenshot generation remain pending. Cloudflare deployment and Chrome Web Store submission still require the publisher's dashboard actions.
+Source is published on `main` at https://github.com/Abhisharma08/devkit (initial release commit `199c4e1`). GitHub Actions run 45335675254 failed before any job steps were available. Its logs were unavailable, and the integration refused a rerun with HTTP 403. The account-side cause is unconfirmed; browser CI and screenshot generation remain pending. Cloudflare deployment and Chrome Web Store submission were pending at that check; subsequent publication is recorded below.
+
+
+November 25, 2026: The publisher reported the Chrome extension published at https://chromewebstore.google.com/detail/nkdkijlcljjgomjaacoafjpbeeckbpim. The listing URL returned HTTP 200 when checked. The website install links now use this listing. Publication does not change the local browser-testing limitations above.

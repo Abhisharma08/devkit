@@ -4,6 +4,8 @@ Repository: https://github.com/Abhisharma08/devkit
 
 Production website: https://devkit.opervia.tech/
 
+Published Chrome extension: https://chromewebstore.google.com/detail/nkdkijlcljjgomjaacoafjpbeeckbpim
+
 Google Search Console verification file: https://devkit.opervia.tech/google00dcef4469dbd84e.html
 
 Sitemap to submit: https://devkit.opervia.tech/sitemap.xml

@@ -1,5 +1,7 @@
 # Chrome Web Store listing
 
+Published listing: https://chromewebstore.google.com/detail/nkdkijlcljjgomjaacoafjpbeeckbpim
+
 ## Name
 
 DevKit: JSON Formatter & Developer Tools

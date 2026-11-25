@@ -1,5 +1,5 @@
 import { DevKitApp } from '@devkit/ui';
-import { serializeJsonLd } from '@devkit/config';
+import { projectConfig, serializeJsonLd } from '@devkit/config';
 import { applicationSchema, homeDescription, homeTitle, pageMetadata } from '../lib/seo';
 export const metadata = pageMetadata(homeTitle, homeDescription, '/');
 export default function Home() {
@@ -11,6 +11,7 @@ export default function Home() {
       <p>DevKit is free and <a href="https://github.com/Abhisharma08/devkit" rel="noopener noreferrer" target="_blank">open source under the MIT license</a>. There are no accounts, ads, tracking, or paid features. Optional donations support the project.</p>
       <h2>Prefer an offline Chrome toolbox?</h2>
       <p>The <a href="/chrome-extension/">DevKit Chrome extension</a> provides the same tools in a toolbar popup, side panel, and full-page workspace. The installed production extension works offline. The website requires an initial page load; tool operations then execute locally.</p>
+      <p><a className="button button-outline" href={projectConfig.chromeStoreUrl} target="_blank" rel="noopener noreferrer">Add DevKit to Chrome — free</a></p>
       <p>Read the <a href="/privacy/">privacy policy</a> for details about local preferences, clipboard handling, and normal hosting requests.</p>
     </section>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(applicationSchema('DevKit', homeDescription, '/')) }} />

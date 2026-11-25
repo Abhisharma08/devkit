@@ -2,11 +2,13 @@
 
 Local developer utilities.
 
+[Open DevKit](https://devkit.opervia.tech/) · [Install the Chrome extension](https://chromewebstore.google.com/detail/nkdkijlcljjgomjaacoafjpbeeckbpim)
+
 A free, privacy-first developer toolbox for the web and Chrome. All processing happens locally. No accounts, backend, database, analytics, ads, subscriptions, or paid APIs. Optional Buy Me a Coffee donations are the only revenue mechanism.
 
 ## Status
 
-The original 20 MVP tools plus three developer utilities and all four application surfaces are implemented. See [VERIFICATION.md](VERIFICATION.md) for the checks actually run in the implementation environment. **Production artifacts build successfully. Browser and offline-extension checks must pass in CI before Chrome Store submission.**
+The original 20 MVP tools plus three developer utilities and all four application surfaces are implemented. See [VERIFICATION.md](VERIFICATION.md) for the checks actually run in the implementation environment. **The website and Chrome extension are published.** Browser test limitations from the implementation environment are documented in VERIFICATION.md.
 
 ## Quick start
 

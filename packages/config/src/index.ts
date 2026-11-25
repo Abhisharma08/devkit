@@ -2,6 +2,7 @@ export const projectConfig = {
   name: 'DevKit',
   // Production origin only. A build-time NEXT_PUBLIC_SITE_URL can override this.
   websiteUrl: 'https://devkit.opervia.tech',
+  chromeStoreUrl: 'https://chromewebstore.google.com/detail/nkdkijlcljjgomjaacoafjpbeeckbpim',
   // Optional. Example: https://www.buymeacoffee.com/your-handle
   donationUrl: 'https://buymeacoffee.com/abhimanyusharma',
 } as const;
